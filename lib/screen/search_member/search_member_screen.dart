@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+
+import '../../constant/constant.dart';
+import '../../constant/member_container.dart';
+import '../profile/my_profile_page.dart';
+
+class SearchMemberScreen extends StatefulWidget {
+  const SearchMemberScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SearchMemberScreen> createState() => _SearchMemberScreenState();
+}
+
+class _SearchMemberScreenState extends State<SearchMemberScreen> {
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          allScreenStatusBarPadding(context),
+          AllPageTitle(
+            text: "Search Member",
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: textFieldWidget(
+                "Search Member",
+                searchController,
+                false,
+                true,
+                Colors.grey.shade100.withOpacity(0.5),
+                TextInputType.text,
+                Color(0xffFB578E).withOpacity(0.3),
+                1,
+                false),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return MemberContainer();
+                }),
+          )
+        ],
+      ),
+    );
+  }
+}
