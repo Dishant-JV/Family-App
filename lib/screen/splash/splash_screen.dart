@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:family_app/constant/set_pref.dart';
+import 'package:family_app/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -18,9 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
-      pushRemoveUntilMethod(context, LogInScreen());
-    });
+    checkLogIn();
   }
 
   @override
@@ -81,5 +81,17 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  void checkLogIn() {
+    Timer(Duration(seconds: 3), () {
+      getBoolPref('login').then((value) {
+        if (value == true) {
+          pushRemoveUntilMethod(context, HomeScreen());
+        } else {
+          pushRemoveUntilMethod(context, LogInScreen());
+        }
+      });
+    });
   }
 }

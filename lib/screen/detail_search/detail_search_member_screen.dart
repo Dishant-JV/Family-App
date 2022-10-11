@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
 import '../../constant/member_container.dart';
-import '../profile/my_profile_page.dart';
+import '../profile/edit_my_profile_page.dart';
 
 class DetailSearchMemberScreen extends StatefulWidget {
   const DetailSearchMemberScreen({Key? key}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:family_app/screen/detail_search/village_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
-import '../profile/my_profile_page.dart';
+import '../profile/edit_my_profile_page.dart';
 import 'district_screen.dart';
 
 class DetailSearchScreen extends StatefulWidget {

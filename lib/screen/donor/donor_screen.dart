@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constant/constant.dart';
-import '../profile/my_profile_page.dart';
+import '../profile/edit_my_profile_page.dart';
 import 'donor_detail_screen.dart';
 
 class DonorScreen extends StatefulWidget {

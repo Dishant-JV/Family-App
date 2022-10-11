@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
-import '../profile/my_profile_page.dart';
+import '../profile/edit_my_profile_page.dart';
 import 'detail_search_member_screen.dart';
 
 class DistrictScreen extends StatefulWidget {

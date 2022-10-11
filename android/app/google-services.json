@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "608459313761",
+    "project_id": "family-app-3ec55",
+    "storage_bucket": "family-app-3ec55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608459313761:android:b9c8fbe3149d30c3455020",
+        "android_client_info": {
+          "package_name": "com.lax.family.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608459313761-t6rhbv1tego1l08ko96rc00ivrrgu2ei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lax.family.app",
+            "certificate_hash": "09f190c547a1349ff580d4cd43ab5c2dfc585d44"
+          }
+        },
+        {
+          "client_id": "608459313761-5ovn229dpv0m45oa7mf9l8o956ivo7pp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBMU_AgV8BIWhpCMWAV9QNrJtQ7ClN3S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608459313761-5ovn229dpv0m45oa7mf9l8o956ivo7pp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

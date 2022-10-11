@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:family_app/screen/profile/my_profile_page.dart';
+import 'package:family_app/screen/profile/edit_my_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

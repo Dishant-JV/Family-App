@@ -1,17 +1,26 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:family_app/constant/constant.dart';
-import 'package:family_app/screen/profile/my_profile_page.dart';
+import 'package:family_app/constant/dialog.dart';
+import 'package:family_app/constant/set_pref.dart';
+import 'package:family_app/getx_controller/getx.dart';
+import 'package:family_app/screen/login/login_screen.dart';
 import 'package:family_app/screen/show_image/show_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
 import '../business/business_screen.dart';
 import '../committee/committee_screen.dart';
 import '../detail_search/detail_search.dart';
 import '../donor/donor_screen.dart';
 import '../event/event_screen.dart';
 import '../my_family/family_list.dart';
+import '../profile/my_profile_page.dart';
 import '../search_member/search_member_screen.dart';
 import 'home_model.dart';
 
@@ -23,24 +32,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FamilyGetController familyGetController = Get.put(FamilyGetController());
+
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => advertiseDialog(context));
+    showConnectivity(context).then((value) {
+      if (value) {
+        familyGetController.imageList.clear();
+        loadImage();
+      }
     });
+    // Future.delayed(Duration.zero, () {
+    //   showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) => advertiseDialog(context));
+    // });
   }
 
   int _current = 0;
   final List<String> imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+    'https://thumbs.gfycat.com/CriminalWhichEasteuropeanshepherd-size_restricted.gif',
   ];
   List<HomeMenuModel> menuList = [
     HomeMenuModel(menuName: "My Profile", menuIcon: Icons.person),
@@ -87,66 +100,85 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Icon(
-                  Icons.settings,
-                  size: 30,
-                  color: primaryColor.withOpacity(0.7),
+                InkWell(
+                  onTap: () async {
+                    ExitDialog(context);
+                  },
+                  child: Icon(
+                    Icons.logout,
+                    size: 30,
+                    color: primaryColor.withOpacity(0.7),
+                  ),
                 )
               ],
             ),
             SizedBox(
               height: 10,
             ),
-            CarouselSlider.builder(
-              itemCount: imgList.length,
-              options: CarouselOptions(
-                  autoPlay: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
-                  height: 170,
-                  enlargeCenterPage: true,
-                  viewportFraction: 1,
-                  scrollPhysics: BouncingScrollPhysics()),
-              itemBuilder: (context, index, realIdx) {
-                return InkWell(
-                  onTap: () {
-                    pushMethod(
-                        context, ShowImageScreen(imageUrl: imgList[index]));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    child: CachedNetworkImage(
-                      imageUrl: imgList[index],
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                        child: CircularProgressIndicator(
-                          color: primaryColor,
+            Obx(() => CarouselSlider.builder(
+                  itemCount: familyGetController.imageList.isNotEmpty
+                      ? familyGetController.imageList.length
+                      : imgList.length,
+                  options: CarouselOptions(
+                      autoPlay: true,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current = index;
+                        });
+                      },
+                      height: 170,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1,
+                      scrollPhysics: BouncingScrollPhysics()),
+                  itemBuilder: (context, index, realIdx) {
+                    return InkWell(
+                      onTap: () {
+                        pushMethod(
+                            context,
+                            ShowImageScreen(
+                                imageUrl:
+                                    familyGetController.imageList.isNotEmpty
+                                        ? familyGetController.imageList[index]
+                                        : imgList[index]));
+                      },
+                      child: Container(
+                        width:double.infinity,
+                        child: CachedNetworkImage(
+                          imageUrl: familyGetController.imageList.isNotEmpty
+                              ? familyGetController.imageList[index]
+                              : imgList[index],
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Icon(Icons.error_outline_outlined,size: 40,color: primaryColor,),
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _current == entry.key
-                          ? primaryColor.withOpacity(0.8)
-                          : Colors.grey.withOpacity(0.8)),
-                );
-              }).toList(),
-            ),
+                    );
+                  },
+                )),
+            Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: familyGetController.imageList
+                      .asMap()
+                      .entries
+                      .map((entry) {
+                    return Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == entry.key
+                              ? primaryColor.withOpacity(0.8)
+                              : Colors.grey.withOpacity(0.8)),
+                    );
+                  }).toList(),
+                )),
             SizedBox(
               height: 15,
             ),
@@ -212,5 +244,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> loadImage() async {
+    getStringPref('token').then((token) async {
+      final response = await http.get(Uri.parse('$apiUrl/viewBannerList'),headers: {'Authorization': token});
+      var data = jsonDecode(response.body);
+      if (data['code'] == 200) {
+        List lst = data['data'];
+        lst.forEach((e) {
+          familyGetController.imageList.add("${imageUrl}=${e['imageUrl']}");
+        });
+      }
+    });
   }
 }

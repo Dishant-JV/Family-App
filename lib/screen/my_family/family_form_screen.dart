@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../constant/constant.dart';
-import '../profile/my_profile_page.dart';
+import '../profile/edit_my_profile_page.dart';
 
 class FamilyFormScreen extends StatefulWidget {
   const FamilyFormScreen({Key? key}) : super(key: key);
@@ -63,7 +63,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "Member Id  ",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         width: getScreenWidth(context, 0.55),
@@ -100,7 +100,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "Parent Name  ",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         height: 45,
@@ -126,7 +126,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                             }).toList(),
                             value: selectedParentValue,
                             onChanged: (val) {
-                              selectedParentValue = val ?? "";
+                              selectedParentValue = val ;
                               setState(() {});
                             },
                             style: textFieldTextStyle,
@@ -174,7 +174,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "BirthDate   ",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         width: getScreenWidth(context, 0.63),
@@ -199,7 +199,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  birthDate.toString() ?? "",
+                                  birthDate.toString() ,
                                   style: TextStyle(
                                       color: Colors.grey.shade600,
                                       fontWeight: FontWeight.w700),
@@ -223,7 +223,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "Mobile1",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         width: getScreenWidth(context, 0.63),
@@ -243,7 +243,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "Mobile2",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         width: getScreenWidth(context, 0.63),
@@ -268,7 +268,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                   ),
                   Text(
                     "Education",
-                    style: textFieldMainTextStyle,
+                    style: profilePageSubTextStyle,
                   ),
                   tagedEducationTextfield(_controller!, educationList),
                   SizedBox(
@@ -276,7 +276,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                   ),
                   Text(
                     "Blood Group",
-                    style: textFieldMainTextStyle,
+                    style: profilePageSubTextStyle,
                   ),
                   SizedBox(
                     height: 10,
@@ -291,7 +291,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                     children: [
                       Text(
                         "Gender",
-                        style: textFieldMainTextStyle,
+                        style: profilePageSubTextStyle,
                       ),
                       Container(
                         width: getScreenWidth(context, 0.63),
@@ -310,7 +310,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                                     }),
                                 Text(
                                   "Male",
-                                  style: textFieldMainTextStyle,
+                                  style: profilePageSubTextStyle,
                                 ),
                               ],
                             ),
@@ -327,7 +327,7 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                                     }),
                                 Text(
                                   "Female",
-                                  style: textFieldMainTextStyle,
+                                  style: profilePageSubTextStyle,
                                 ),
                               ],
                             ),
@@ -339,7 +339,6 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  saveElevatedButton(context, "Save")
                 ],
               ),
             ),
