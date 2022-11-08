@@ -1,92 +1,141 @@
 import 'dart:io';
 
 import 'package:family_app/screen/profile/edit_my_profile_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constant.dart';
 
 class MemberContainer extends StatelessWidget {
-  const MemberContainer({Key? key}) : super(key: key);
+  final List<dynamic> lst;
+  final int index;
+  final RxBool switchData;
+  final bool commiteeScreen;
+
+  const MemberContainer(
+      {Key? key,
+      required this.lst,
+      required this.index,
+      required this.switchData,
+      required this.commiteeScreen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 10),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                  color: Colors.grey.shade600.withOpacity(0.3), width: 1.2))),
-      child: Row(
-        children: [
-          profilePhotoContainer(30),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Obx(() => Container(
+          padding: EdgeInsets.only(top: 20, bottom: 10),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      color: Colors.grey.shade600.withOpacity(0.3),
+                      width: 1.2))),
+          child: Row(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Kanubhai K Dudhat",
-                    style: allCardMainTextStyle,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: primaryColor.withOpacity(0.3)),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Text(
-                      "1302",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  )
-                ],
-              ),
+              profilePhotoContainer(30),
               SizedBox(
-                height: 3,
+                width: 10,
               ),
-              Row(
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Mo : 9099233354",
-                    style: allCardSubTextStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            switchData == true
+                                ? commiteeScreen == false
+                                    ? "${lst[index]['titleData']['gujTitle']} ${lst[index]['gujFirstName']} ${lst[index]['gujMiddleName']} ${lst[index]['gujLastName']} "
+                                    : "${lst[index]['titleData']['gujTitle']} ${lst[index]['memberData']['gujFirstName']} ${lst[index]['memberData']['gujMiddleName']} ${lst[index]['memberData']['gujLastName']}"
+                                : commiteeScreen == false
+                                    ? "${lst[index]['titleData']['engTitle']} ${lst[index]['engFirstName']} ${lst[index]['engMiddleName']} ${lst[index]['engLastName']}"
+                                    : "${lst[index]['titleData']['engTitle']} ${lst[index]['memberData']['engFirstName']} ${lst[index]['memberData']['engMiddleName']} ${lst[index]['memberData']['engLastName']}",
+                            style: allCardMainTextStyle,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: primaryColor.withOpacity(0.3)),
+                        margin: EdgeInsets.only(left: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Text(
+                          commiteeScreen == false
+                              ? lst[index]['memberId'].toString()
+                              : lst[index]['memberData']['memberId'].toString(),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: InkWell(
-                          onTap: () {
-                            openWhatsapp("9099233354", context);
-                          },
-                          child: wpIcon)),
-                  InkWell(
-                    onTap: () {
-                      makingPhoneCall("9099233354", context);
-                    },
-                    child: callContainer(),
-                  )
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Row(
+                    children: [
+                      commiteeScreen == false
+                          ? Text(
+                              "Mo : ${lst[index]['primaryContact'].toString()}",
+                              style: allCardSubTextStyle,
+                            )
+                          : Text(
+                              "Mo : ${lst[index]['memberData']['primaryContact'].toString()}",
+                              style: allCardSubTextStyle,
+                            ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: InkWell(
+                              onTap: () {
+                                openWhatsapp(
+                                    commiteeScreen == false
+                                        ? lst[index]['primaryContact']
+                                        : lst[index]['memberData']
+                                            ['primaryContact'],
+                                    context);
+                              },
+                              child: wpIcon)),
+                      InkWell(
+                        onTap: () {
+                          makingPhoneCall(
+                              commiteeScreen == false
+                                  ? lst[index]['primaryContact']
+                                  : lst[index]['memberData']['primaryContact'],
+                              context);
+                        },
+                        child: callContainer(),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  commiteeScreen == false
+                      ? Row(
+                          children: [
+                            locationIcon,
+                            Text(
+                              switchData.value == true
+                                  ? "${lst[index]['villageData']['gujVillageName']} , ${lst[index]['talukaData']['gujTalukaName']} , ${lst[index]['districtData']['gujDistrictName']}"
+                                  : "${lst[index]['villageData']['engVillageName']} , ${lst[index]['talukaData']['engTalukaName']} , ${lst[index]['districtData']['engDistrictName']}",
+                              style: allCardSubTextStyle,
+                            )
+                          ],
+                        )
+                      : Container()
                 ],
-              ),
-              SizedBox(
-                height: 3,
-              ),
-              Row(
-                children: [
-                  locationIcon,
-                  Text(
-                    "Juna Janjariya, Bagsara, Amreli",
-                    style: allCardSubTextStyle,
-                  )
-                ],
-              )
+              ))
             ],
-          ))
-        ],
-      ),
-    );
+          ),
+        ));
   }
 }
 

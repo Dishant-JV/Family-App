@@ -58,6 +58,9 @@ dependencies:
   dropdown_button2: ^1.5.3
   fluttertoast: ^8.0.9
   ndialog: ^4.1.1+1
+  zoom_pinch_overlay: ^1.3.2
+  youtube_player_flutter: ^8.1.1
+  youtube: ^1.0.1
 
 
 

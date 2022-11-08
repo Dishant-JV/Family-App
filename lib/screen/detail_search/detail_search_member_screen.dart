@@ -42,17 +42,17 @@ class _DetailSearchMemberScreenState extends State<DetailSearchMemberScreen> {
           SizedBox(
             height: 10,
           ),
-          Expanded(
-            child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return MemberContainer();
-                }),
-          )
+          // Expanded(
+          //   child: ListView.builder(
+          //       padding: EdgeInsets.symmetric(horizontal: 15),
+          //       shrinkWrap: true,
+          //       scrollDirection: Axis.vertical,
+          //       physics: BouncingScrollPhysics(),
+          //       itemCount: 10,
+          //       itemBuilder: (context, index) {
+          //         return MemberContainer();
+          //       }),
+          // )
         ],
       ),
     );

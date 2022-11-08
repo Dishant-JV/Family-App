@@ -188,6 +188,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   Future<void> checkLogInDetail(String phone, String memberId) async {
+    print(apiUrl);
     try {
       final response = await http.post(Uri.parse("$apiUrl/checkCredentials"),
           headers: {'Content-Type': 'application/json'},

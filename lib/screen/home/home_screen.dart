@@ -6,6 +6,7 @@ import 'package:family_app/constant/constant.dart';
 import 'package:family_app/constant/dialog.dart';
 import 'package:family_app/constant/set_pref.dart';
 import 'package:family_app/getx_controller/getx.dart';
+import 'package:family_app/screen/gallery/gallery_home.dart';
 import 'package:family_app/screen/login/login_screen.dart';
 import 'package:family_app/screen/show_image/show_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -200,7 +201,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else if (index == 1) {
                         pushMethod(context, FamilyListScreen());
                       } else if (index == 2) {
-                        pushMethod(context, SearchMemberScreen());
+                        pushMethod(context, SearchMemberScreen(pushFromOuterScreen: true,));
+
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     settings: RouteSettings(name: "/searchMember"),
+                        //     builder: (context) => SearchMemberScreen(
+                        //         pushFromOuterScreen: false)));
                       } else if (index == 3) {
                         pushMethod(context, CommmitteeScreen());
                       } else if (index == 4) {
@@ -211,6 +217,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         pushMethod(context, BusinessScreen());
                       } else if (index == 9) {
                         pushMethod(context, DetailSearchScreen());
+                      }else if (index == 10) {
+                        pushMethod(context, GalleryHome());
                       }
                     },
                     child: Container(

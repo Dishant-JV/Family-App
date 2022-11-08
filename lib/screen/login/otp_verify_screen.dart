@@ -92,6 +92,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 child: PinCodeTextField(
                   appContext: context,
                   length: 6,
+                  autoDisposeControllers: false,
                   obscureText: false,
                   animationType: AnimationType.fade,
                   pinTheme: PinTheme(
@@ -177,10 +178,10 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       var data = jsonDecode(response.body);
       if (data['code'] == 200) {
         setStringPref('token', data['data']['token']);
-        setBoolPref('login',true);
+        setBoolPref('login', true);
         familyGetController.otpVerifyLogin.value = false;
         snackBar(context, "Login SuccessFully !", Colors.green);
-        pushMethod(context, HomeScreen());
+        pushRemoveUntilMethod(context, HomeScreen());
       } else {
         familyGetController.otpVerifyLogin.value = false;
         snackBar(context, "Something went wrong", Colors.red);

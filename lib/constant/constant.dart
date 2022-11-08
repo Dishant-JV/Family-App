@@ -1,22 +1,23 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:family_app/constant/snack_bar.dart';
+import 'package:family_app/constant/switch.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../screen/profile/edit_my_profile_page.dart';
 import '../screen/show_image/show_image.dart';
 
-
- // String apiUrl="http://192.168.126.198:3008";
-String apiUrl="http://192.168.43.124:3008";
-String imageUrl="https://drive.google.com/uc?export=view&id";
-
+String apiUrl="http://192.168.245.198:3008";
+// String apiUrl = "http://10.20.203.242:3008";
+String imageUrl = "https://drive.google.com/uc?export=view&id";
 
 allScreenStatusBarPadding(BuildContext context) {
   return SizedBox(
     height: MediaQuery.of(context).padding.top + 10,
   );
 }
-
 getScreenHeight(BuildContext context, double height) {
   return MediaQuery.of(context).size.height * height;
 }
@@ -35,11 +36,29 @@ pushMethod(BuildContext context, Widget name) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => name));
 }
 
+dateFormat(String date) {
+  return DateFormat('dd/MM/yyyy').format(DateTime.parse(date.substring(0, 10)));
+}
+
+allPageTitleRow(String pageName, RxBool switchName) {
+  return Row(
+    children: [
+      Expanded(child: AllPageTitle(text: pageName)),
+      Padding(
+        padding: EdgeInsets.only(right: 15),
+        child: engGujSwitch(switchName),
+      )
+    ],
+  );
+}
+
 //color
 Color primaryColor = Color(0xff28156E);
 
 //String
 String familyName = "Dudhat Parivar";
+
+int search_member_dialog_open_time=0;
 
 //text_style
 TextStyle familyTextStyle = TextStyle(
@@ -132,6 +151,7 @@ Future<DateTime?> pickedDate(BuildContext context) async {
       lastDate: DateTime.now());
   return picked;
 }
+
 showToast(String text) {
   return Fluttertoast.showToast(
     msg: text,
@@ -177,10 +197,9 @@ textFieldWidget(
         filled: true,
         fillColor: color,
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.red.shade300)
-        ),
-        errorStyle: TextStyle(color: Colors.red.shade300,fontSize: 12),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red.shade300)),
+        errorStyle: TextStyle(color: Colors.red.shade300, fontSize: 12),
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xff5D92C1).withOpacity(0.05)),
             borderRadius: BorderRadius.circular(10)),
@@ -293,4 +312,16 @@ Future<bool> showConnectivity(BuildContext context) async {
   } else {
     return true;
   }
+}
+
+centerNoRecordText() {
+  return Center(
+    child: Text(
+      "No Record",
+      style: TextStyle(
+          color: Colors.grey.withOpacity(0.2),
+          fontSize: 23,
+          fontWeight: FontWeight.w500),
+    ),
+  );
 }

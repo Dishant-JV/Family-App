@@ -33,6 +33,7 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
   }
 
   FamilyGetController familyGetController = Get.put(FamilyGetController());
+  bool loading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +56,16 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              pushMethod(context, ProfilePageUI(
-                                showEditBtn: false,
-                                switchData: familyGetController.myFamilyOnOff,
-                                map: familyGetController.familyDataList[index],
-                                screenName: 'Member Profile',
-                              ));
+                              pushMethod(
+                                  context,
+                                  ProfilePageUI(
+                                    showEditBtn: false,
+                                    switchData:
+                                        familyGetController.myFamilyOnOff,
+                                    map: familyGetController
+                                        .familyDataList[index],
+                                    screenName: 'Member Profile',
+                                  ));
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -91,7 +96,10 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
                                                   color: Colors.grey,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            Text(familyGetController.familyDataList[index]['engRelation'],
+                                            Text(
+                                                familyGetController
+                                                        .familyDataList[index]
+                                                    ['engRelation'],
                                                 style: TextStyle(
                                                     color: Colors.grey.shade700,
                                                     fontWeight:
@@ -106,9 +114,11 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
                             ),
                           );
                         })
-                    : Center(
-                        child: circularProgress(),
-                      ),
+                    : loading == true
+                        ? Center(
+                            child: circularProgress(),
+                          )
+                        : centerNoRecordText(),
               ))
         ],
       ),
@@ -125,9 +135,10 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
         var data = jsonDecode(response.body);
         if (data['code'] == 200) {
           familyGetController.familyDataList.addAll(data['data']);
-        } else {
-          snackBar(context, data['message'], Colors.red);
         }
+        setState(() {
+          loading = false;
+        });
       });
     } catch (e) {
       snackBar(context, "Something went wrong", Colors.red);

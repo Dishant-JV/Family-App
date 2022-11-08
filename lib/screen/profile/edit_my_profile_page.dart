@@ -71,53 +71,53 @@ class _EditMyProfilePageState extends State<EditMyProfilePage> {
                 showToast('Check Internet Connection');
               }
             },
-            child: Container(
-              margin: EdgeInsets.only(left: 17, right: 17),
-              decoration: BoxDecoration(
-                  border:
-                      Border.all(color: Color(0xff5D92C1).withOpacity(0.08)),
-                  borderRadius: BorderRadius.circular(10)),
-              height: 48,
-              width: getScreenWidth(
-                context,
-                0.92,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                  buttonDecoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  dropdownDecoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  hint: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      'Select Type',
-                      style:
-                          TextStyle(color: Color(0xff5D92C1).withOpacity(0.8)),
+              child: Container(
+                margin: EdgeInsets.only(left: 17, right: 17),
+                decoration: BoxDecoration(
+                    border:
+                        Border.all(color: Color(0xff5D92C1).withOpacity(0.08)),
+                    borderRadius: BorderRadius.circular(10)),
+                height: 48,
+                width: getScreenWidth(
+                  context,
+                  0.92,
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    buttonDecoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    dropdownDecoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    hint: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Select Type',
+                        style:
+                            TextStyle(color: Color(0xff5D92C1).withOpacity(0.8)),
+                      ),
                     ),
-                  ),
-                  items: editTypeList
-                      .map((item) => DropdownMenuItem<String>(
-                            value: item['name'],
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Text(
-                                item['name'],
+                    items: editTypeList
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item['name'],
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Text(
+                                  item['name'],
+                                ),
                               ),
-                            ),
-                          ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value as String;
-                    });
-                  },
-                  buttonHeight: 40,
-                  itemHeight: 40,
+                            ))
+                        .toList(),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                      });
+                    },
+                    buttonHeight: 40,
+                    itemHeight: 40,
+                  ),
                 ),
               ),
-            ),
           ),
           Form(
             key: formKey,
@@ -657,12 +657,18 @@ class AllPageTitle extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: getScreenWidth(context, 0.05),
+            width: getScreenWidth(context, 0.03),
           ),
-          Text(
-            text,
-            style: TextStyle(
-                color: Colors.black, fontSize: 23, fontWeight: FontWeight.w500),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                text,
+                style: TextStyle(
+                    color: Colors.black, fontSize: 23, fontWeight: FontWeight.w500),
+              ),
+            ),
           ),
         ],
       ),

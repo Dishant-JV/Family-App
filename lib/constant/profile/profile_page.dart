@@ -32,15 +32,7 @@ class ProfilePageUI extends StatelessWidget {
                   child: Column(
                     children: [
                       allScreenStatusBarPadding(context),
-                      Row(
-                        children: [
-                          Expanded(child: AllPageTitle(text: screenName)),
-                          Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: engGujSwitch(switchData),
-                          )
-                        ],
-                      ),
+                      allPageTitleRow(screenName, switchData),
                       SizedBox(
                         height: 10,
                       ),
@@ -128,15 +120,8 @@ class ProfilePageUI extends StatelessWidget {
                                 SizedBox(
                                   height: 15,
                                 ),
-                                profilePageRow(
-                                    Icons.date_range,
-                                    26,
-                                    DateFormat('dd/MM/yyyy').format(
-                                        DateTime.parse(map['dob']
-                                            .toString()
-                                            .substring(0, 10))),
-                                    10,
-                                    5),
+                                profilePageRow(Icons.date_range, 26,
+                                    dateFormat(map['dob'].toString()), 10, 5),
                                 SizedBox(
                                   height: 15,
                                 ),
