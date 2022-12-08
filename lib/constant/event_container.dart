@@ -31,11 +31,7 @@ class EventContainer extends StatelessWidget {
                   imageUrl: "$imageUrl=${lst[index]['banner']}",
                   height: 130,
                   width: 130,
-                  placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(
-                          color: primaryColor,
-                        ),
-                      ),
+                  placeholder: (context, url) => skeletonContainer(context),
                   errorWidget: (context, url, error) =>
                       Image.asset('assets/images/noImage.png')),
               SizedBox(

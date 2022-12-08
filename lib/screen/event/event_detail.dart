@@ -26,14 +26,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   FamilyGetController familyGetController = Get.put(FamilyGetController());
   bool loading = true;
   Map eventDetailData = {};
-  List? eventComiteeList;
+  List? eventCommitteeList;
 
   @override
   void initState() {
     super.initState();
     showConnectivity(context).then((value) {
       if (value) {
-        familyGetController.eventComiteeList.clear();
+        familyGetController.eventCommitteeList.clear();
         getEventDetailData();
       }
     });
@@ -132,7 +132,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         SizedBox(
                           height: 25,
                         ),
-                        familyGetController.eventComiteeList.isNotEmpty
+                        familyGetController.eventCommitteeList.isNotEmpty
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -146,16 +146,16 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: familyGetController
-                                          .eventComiteeList.length,
+                                          .eventCommitteeList.length,
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () {
                                             pushMethod(
                                                 context,
-                                                CommiteeMemberListScreen(
+                                                committeeMemberListScreen(
                                                   comiteeId: familyGetController
-                                                          .eventComiteeList[
+                                                          .eventCommitteeList[
                                                       index]['comiteeId'],
                                                 ));
                                           },
@@ -173,7 +173,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${familyGetController.eventDetailOnOff.value == false ? familyGetController.eventComiteeList[index]['engComiteeName'] : familyGetController.eventComiteeList[index]['gujComiteeName']}",
+                                                  "${familyGetController.eventDetailOnOff.value == false ? familyGetController.eventCommitteeList[index]['engComiteeName'] : familyGetController.eventCommitteeList[index]['gujComiteeName']}",
                                                   style:
                                                       profilePageSubTextStyle,
                                                 ),
@@ -182,7 +182,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                                 ),
                                                 Text(
                                                   familyGetController
-                                                          .eventComiteeList[
+                                                          .eventCommitteeList[
                                                       index]['comiteeType'],
                                                   style: cityTextStyle,
                                                 ),
@@ -221,9 +221,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         var data = jsonDecode(response.body);
         if (data['code'] == 200) {
           eventDetailData.addAll(data['data']);
-          eventComiteeList = data['data']['comiteeData'];
-          if (eventComiteeList != null) {
-            familyGetController.eventComiteeList.addAll(eventComiteeList ?? []);
+          eventCommitteeList = data['data']['comiteeData'];
+          if (eventCommitteeList != null) {
+            familyGetController.eventCommitteeList.addAll(eventCommitteeList ?? []);
           }
         }
         setState(() {

@@ -14,6 +14,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../constant/snack_bar.dart';
+import '../splash/splash_screen.dart';
 import 'login_screen.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
@@ -173,7 +174,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "phno": "${widget.mobileNumber}",
-            'memberId': int.parse("${widget.memberId}")
+            'memberId': int.parse("${widget.memberId}"),
+          'deviceToken':deviceToken
           }));
       var data = jsonDecode(response.body);
       if (data['code'] == 200) {

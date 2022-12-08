@@ -12,18 +12,18 @@ import '../../constant/constant.dart';
 import '../../constant/set_pref.dart';
 import '../../constant/snack_bar.dart';
 
-class CommiteeMemberListScreen extends StatefulWidget {
+class committeeMemberListScreen extends StatefulWidget {
   final int comiteeId;
 
-  const CommiteeMemberListScreen({Key? key, required this.comiteeId})
+  const committeeMemberListScreen({Key? key, required this.comiteeId})
       : super(key: key);
 
   @override
-  State<CommiteeMemberListScreen> createState() =>
-      _CommiteeMemberListScreenState();
+  State<committeeMemberListScreen> createState() =>
+      _committeeMemberListScreenState();
 }
 
-class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
+class _committeeMemberListScreenState extends State<committeeMemberListScreen> {
   FamilyGetController familyGetController = Get.find();
   bool loading = true;
   Map commiteeDetailData = {};
@@ -35,7 +35,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
     super.initState();
     showConnectivity(context).then((value) {
       if (value) {
-        getCommiteeMemberList();
+        getcommitteeMemberList();
       }
     });
   }
@@ -47,7 +47,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
         children: [
           allScreenStatusBarPadding(context),
           allPageTitleRow("Commitee Member List",
-              familyGetController.commiteeDetailListOnOff),
+              familyGetController.committeeDetailListOnOff),
           commiteeDetailData.length != 0
               ? Obx(() => Container(
                     margin: EdgeInsets.symmetric(horizontal: 15),
@@ -57,7 +57,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
                           height: 10,
                         ),
                         Text(
-                          familyGetController.commiteeDetailListOnOff.value ==
+                          familyGetController.committeeDetailListOnOff.value ==
                                   false
                               ? ":: ${commiteeDetailData['engName']} ::"
                               : ":: ${commiteeDetailData['gujName']} ::",
@@ -100,7 +100,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
                                                   BorderRadius.circular(5)),
                                           child: Text(
                                             familyGetController
-                                                        .commiteeDetailListOnOff
+                                                        .committeeDetailListOnOff
                                                         .value ==
                                                     false
                                                 ? "${mainMemberList[index]['engFirstName']} ${mainMemberList[index]['engMiddleName']} ${mainMemberList[index]['engLastName']}"
@@ -142,7 +142,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
                                                   BorderRadius.circular(5)),
                                           child: Text(
                                             familyGetController
-                                                        .commiteeDetailListOnOff
+                                                        .committeeDetailListOnOff
                                                         .value ==
                                                     false
                                                 ? "${subMemberList[index]['engFirstName']} ${subMemberList[index]['engMiddleName']} ${subMemberList[index]['engLastName']}"
@@ -171,7 +171,7 @@ class _CommiteeMemberListScreenState extends State<CommiteeMemberListScreen> {
     );
   }
 
-  void getCommiteeMemberList() {
+  void getcommitteeMemberList() {
     try {
       getStringPref('token').then((token) async {
         final response = await http.get(

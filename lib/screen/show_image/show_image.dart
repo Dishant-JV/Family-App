@@ -29,11 +29,7 @@ class ShowImageScreen extends StatelessWidget {
                 child: CachedNetworkImage(
                     imageUrl: imageUrl,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
-                        ),
+                    placeholder: (context, url) => skeletonContainer(context),
                     errorWidget: (context, url, error) =>
                         Image.asset('assets/images/noImage.png')),
               ),

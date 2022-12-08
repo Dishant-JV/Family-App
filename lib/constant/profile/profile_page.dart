@@ -14,13 +14,15 @@ class ProfilePageUI extends StatelessWidget {
   final RxBool switchData;
   final Map map;
   final bool showEditBtn;
+  final bool? committeeScreen;
 
   ProfilePageUI(
       {Key? key,
       required this.screenName,
       required this.switchData,
       required this.map,
-      required this.showEditBtn})
+      required this.showEditBtn,
+      this.committeeScreen})
       : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class ProfilePageUI extends StatelessWidget {
                         children: [
                           Align(
                             alignment: Alignment.center,
-                            child: profilePhotoContainer(45),
+                            child: profilePhotoContainer(map['avatar']),
                           ),
                           SizedBox(
                             height: 10,
@@ -151,7 +153,7 @@ class ProfilePageUI extends StatelessWidget {
                                 profilePageRow(
                                     Icons.bloodtype,
                                     26,
-                                    "${map['bloodGroup']} , ${map['engGender']}",
+                                    "${map['bloodGroup']} , ${switchData == true ? map['gujGender'] : map['engGender']}",
                                     10,
                                     1),
                                 SizedBox(
@@ -186,7 +188,21 @@ class ProfilePageUI extends StatelessWidget {
                                         ? "${map['villageData']['gujVillageName']} , ${map['talukaData']['gujTalukaName']} , ${map['districtData']['gujDistrictName']}"
                                         : "${map['villageData']['engVillageName']} , ${map['talukaData']['engTalukaName']} , ${map['districtData']['engDistrictName']}",
                                     10,
-                                    5)
+                                    5),
+                                committeeScreen == true
+                                    ? Column(
+                                        children: [
+                                          eventContainer(
+                                              "Event : ",
+                                              map['eventData']['engEventName'],
+                                              map['eventData']['gujEventName']),
+                                          eventContainer(
+                                              "Committee : ",
+                                              "${map['comiteeData']['engName']} [${map['comiteeData']['comiteeType']}]",
+                                              "${map['comiteeData']['gujName']} [${map['comiteeData']['comiteeType']}]"),
+                                        ],
+                                      )
+                                    : Container()
                               ],
                             ),
                           )
@@ -199,6 +215,33 @@ class ProfilePageUI extends StatelessWidget {
                   child: circularProgress(),
                 ),
         ));
+  }
+
+  eventContainer(String title, String engText, String gujText) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5))),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.blueGrey,
+                fontWeight: FontWeight.w500,
+                fontSize: 18),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Text(
+                switchData == true ? gujText : engText,
+                style: normalTextStyle,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -226,10 +269,7 @@ Widget profilePageRow(
               padding: EdgeInsets.only(top: pad),
               child: Text(
                 name,
-                style: TextStyle(
-                    color: Colors.black.withOpacity(0.75),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400),
+                style: normalTextStyle,
               ),
             ),
           ),

@@ -30,11 +30,12 @@ class FamilyGetController extends GetxController {
   RxList searchMemberList=[].obs;
   RxList distList=[].obs;
   RxList talukaList=[].obs;
+  RxMap mainMemberMap={}.obs;
+  RxBool mainMemberOnOff = false.obs;
 
   RxString selectedDist="".obs;
   RxString selectedTaluka="".obs;
   RxBool searchMemberOnOff = false.obs;
-
 
   //business screen
   RxList businessNameList=[].obs;
@@ -44,17 +45,20 @@ class FamilyGetController extends GetxController {
 
   //commitee member screen
 
-  RxList commiteeMemberList=[].obs;
-  RxBool commiteeMemberOnOff = false.obs;
+  RxList committeeMemberList=[].obs;
+  RxBool committeeMemberOnOff = false.obs;
+  RxMap committeeMemberMap={}.obs;
+  RxBool committeeMemberMapOnOff = false.obs;
+
 
   //event screen
   RxList allEventList=[].obs;
   RxBool allEventOnOff = false.obs;
 
-  RxList eventComiteeList=[].obs;
+  RxList eventCommitteeList=[].obs;
   RxBool eventDetailOnOff = false.obs;
 
-  RxBool commiteeDetailListOnOff = false.obs;
+  RxBool committeeDetailListOnOff = false.obs;
 
   //donor screen
 
@@ -70,6 +74,10 @@ class FamilyGetController extends GetxController {
   RxList galleryVideoAlbum=[].obs;
   RxList galleryImage=[].obs;
   RxList galleryVideoThumbnail=[].obs;
+
+  //post screen
+
+  RxList postList=[].obs;
 
 
 

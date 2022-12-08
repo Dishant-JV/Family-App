@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:family_app/screen/show_image/show_image.dart';
+import 'package:family_app/screen/gallery/gallery_image/gallery_image_detail.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,7 @@ class _GalleryImagesState extends State<GalleryImageAlbum> {
     return Scaffold(
         body: Obx(() => familyGetController.galleryImageAlbum.isNotEmpty
             ? GridView.builder(
-                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: familyGetController.galleryImageAlbum.length,
@@ -51,56 +52,65 @@ class _GalleryImagesState extends State<GalleryImageAlbum> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
-                    onTap: () {
-                      pushMethod(
-                          context,
-                          ShowImageScreen(
-                            imageUrl:
-                                "$imageUrl=${familyGetController.galleryImage[index]['imageUrl']}",
-                            isAssetImage: false,
-                          ));
-                    },
-                    child: Stack(
-                      alignment: Alignment.bottomLeft,
-                      children: [
-                        Container(
-                          width: getScreenWidth(context, 0.5),
-                          height: getScreenWidth(context, 0.5),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 2),
-                          ),
-                          child: CachedNetworkImage(
-                              imageUrl:
-                                  "$imageUrl=${familyGetController.galleryImageAlbum[index]['banner']}",
-                              fit: BoxFit.cover,
-                              color: Color.fromRGBO(100, 100, 100, 0.8),
-                              colorBlendMode: BlendMode.modulate,
-                              placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(
-                                      color: primaryColor,
-                                    ),
-                                  ),
-                              errorWidget: (context, url, error) =>
-                                  Image.asset('assets/images/noImage.png')),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(3),
-                          margin: EdgeInsets.only(left: 5,bottom: 5),
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Text(
+                      onTap: () {
+                        familyGetController.galleryImage.clear();
+                        familyGetController.galleryImage.addAll(
                             familyGetController.galleryImageAlbum[index]
-                                ['engEventName'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                                ['imageData']);
+                        pushMethod(
+                            context,
+                            GalleryImageDetail(
+                              eventName: familyGetController
+                                  .galleryImageAlbum[index]['engEventName'],
+                            ));
+                      },
+                      child: GalleryImageVideoContainer(
+                        imageUrl:
+                            "$imageUrl=${familyGetController.galleryImageAlbum[index]['banner']}",
+                        eventName: familyGetController.galleryImageAlbum[index]
+                            ['engEventName'],
+                      )
+                      // Stack(
+                      //   alignment: Alignment.bottomLeft,
+                      //   children: [
+                      //     Container(
+                      //       width: getScreenWidth(context, 0.5),
+                      //       height: getScreenWidth(context, 0.5),
+                      //       decoration: BoxDecoration(
+                      //         border: Border.all(color: Colors.black, width: 2),
+                      //       ),
+                      //       child: CachedNetworkImage(
+                      //           imageUrl:
+                      //               "$imageUrl=${familyGetController.galleryImageAlbum[index]['banner']}",
+                      //           fit: BoxFit.cover,
+                      //           color: Color.fromRGBO(100, 100, 100, 0.8),
+                      //           colorBlendMode: BlendMode.modulate,
+                      //           placeholder: (context, url) => Center(
+                      //                 child: CircularProgressIndicator(
+                      //                   color: primaryColor,
+                      //                 ),
+                      //               ),
+                      //           errorWidget: (context, url, error) =>
+                      //               Image.asset('assets/images/noImage.png')),
+                      //     ),
+                      //     Container(
+                      //       padding: EdgeInsets.all(3),
+                      //       margin: EdgeInsets.only(left: 5, bottom: 5),
+                      //       decoration: BoxDecoration(
+                      //           color: Colors.black,
+                      //           borderRadius: BorderRadius.circular(5)),
+                      //       child: Text(
+                      //         familyGetController.galleryImageAlbum[index]
+                      //             ['engEventName'],
+                      //         textAlign: TextAlign.center,
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.w500,
+                      //             color: Colors.white),
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+                      );
                 },
               )
             : loading == true
@@ -128,5 +138,50 @@ class _GalleryImagesState extends State<GalleryImageAlbum> {
     } catch (e) {
       snackBar(context, "Something went wrong", Colors.red);
     }
+  }
+}
+
+class GalleryImageVideoContainer extends StatelessWidget {
+  final String imageUrl;
+  final String eventName;
+
+  const GalleryImageVideoContainer(
+      {Key? key, required this.imageUrl, required this.eventName})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomLeft,
+      children: [
+        Container(
+          width: getScreenWidth(context, 0.5),
+          height: getScreenWidth(context, 0.5),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 2),
+          ),
+          child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              color: Color.fromRGBO(100, 100, 100, 0.8),
+              colorBlendMode: BlendMode.modulate,
+              placeholder: (context, url) => skeletonContainer(context),
+
+              errorWidget: (context, url, error) =>
+                  Image.asset('assets/images/noImage.png')),
+        ),
+        Container(
+          padding: EdgeInsets.all(3),
+          margin: EdgeInsets.only(left: 5, bottom: 5),
+          decoration: BoxDecoration(
+              color: Colors.black, borderRadius: BorderRadius.circular(5)),
+          child: Text(
+            eventName,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+          ),
+        )
+      ],
+    );
   }
 }

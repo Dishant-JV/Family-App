@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:skeletons/skeletons.dart';
 
 import '../screen/profile/edit_my_profile_page.dart';
 import '../screen/show_image/show_image.dart';
 
-String apiUrl="http://192.168.245.198:3008";
-// String apiUrl = "http://10.20.203.242:3008";
+//rohan's
+String apiUrl = "http://192.168.207.198:3008";
+
+//sahil's
+// String apiUrl = "http://192.168.43.124:3008";
 String imageUrl = "https://drive.google.com/uc?export=view&id";
 
 allScreenStatusBarPadding(BuildContext context) {
@@ -18,6 +22,7 @@ allScreenStatusBarPadding(BuildContext context) {
     height: MediaQuery.of(context).padding.top + 10,
   );
 }
+
 getScreenHeight(BuildContext context, double height) {
   return MediaQuery.of(context).size.height * height;
 }
@@ -40,6 +45,19 @@ dateFormat(String date) {
   return DateFormat('dd/MM/yyyy').format(DateTime.parse(date.substring(0, 10)));
 }
 
+skeletonContainer(BuildContext context) {
+  return SkeletonAvatar(
+      style: SkeletonAvatarStyle(
+          width: getScreenWidth(context, 0.5),
+          height: getScreenWidth(context, 0.5)));
+}
+
+skeletonRoundedContainer(BuildContext context, double height, double width) {
+  return SkeletonAvatar(
+      style: SkeletonAvatarStyle(
+          width: height, height: width, shape: BoxShape.circle));
+}
+
 allPageTitleRow(String pageName, RxBool switchName) {
   return Row(
     children: [
@@ -58,7 +76,7 @@ Color primaryColor = Color(0xff28156E);
 //String
 String familyName = "Dudhat Parivar";
 
-int search_member_dialog_open_time=0;
+int search_member_dialog_open_time = 0;
 
 //text_style
 TextStyle familyTextStyle = TextStyle(
@@ -90,6 +108,10 @@ TextStyle searchCardTextStyle = TextStyle(
     letterSpacing: 0.5);
 TextStyle cityTextStyle = TextStyle(
     color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 15);
+TextStyle normalTextStyle = TextStyle(
+    color: Colors.black.withOpacity(0.75),
+    fontSize: 18,
+    fontWeight: FontWeight.w400);
 
 //icon
 

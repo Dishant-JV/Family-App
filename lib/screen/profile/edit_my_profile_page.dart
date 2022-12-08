@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:family_app/constant/constant.dart';
 import 'package:family_app/getx_controller/getx.dart';
@@ -71,53 +72,53 @@ class _EditMyProfilePageState extends State<EditMyProfilePage> {
                 showToast('Check Internet Connection');
               }
             },
-              child: Container(
-                margin: EdgeInsets.only(left: 17, right: 17),
-                decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Color(0xff5D92C1).withOpacity(0.08)),
-                    borderRadius: BorderRadius.circular(10)),
-                height: 48,
-                width: getScreenWidth(
-                  context,
-                  0.92,
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    buttonDecoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    dropdownDecoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    hint: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Select Type',
-                        style:
-                            TextStyle(color: Color(0xff5D92C1).withOpacity(0.8)),
-                      ),
+            child: Container(
+              margin: EdgeInsets.only(left: 17, right: 17),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: Color(0xff5D92C1).withOpacity(0.08)),
+                  borderRadius: BorderRadius.circular(10)),
+              height: 48,
+              width: getScreenWidth(
+                context,
+                0.92,
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  buttonDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  dropdownDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  hint: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Select Type',
+                      style:
+                          TextStyle(color: Color(0xff5D92C1).withOpacity(0.8)),
                     ),
-                    items: editTypeList
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item['name'],
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Text(
-                                  item['name'],
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                      });
-                    },
-                    buttonHeight: 40,
-                    itemHeight: 40,
                   ),
+                  items: editTypeList
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item['name'],
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Text(
+                                item['name'],
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  value: selectedValue,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value as String;
+                    });
+                  },
+                  buttonHeight: 40,
+                  itemHeight: 40,
                 ),
               ),
+            ),
           ),
           Form(
             key: formKey,
@@ -601,40 +602,37 @@ tagedEducationTextfield(
   );
 }
 
-profilePhotoContainer(double radius) {
-  return Container(
-    decoration: BoxDecoration(
-        border: Border.all(color: primaryColor.withOpacity(0.7), width: 2),
-        shape: BoxShape.circle),
-    child: CircleAvatar(
-      radius: radius,
-      backgroundImage: AssetImage(("assets/images/profile_photo.jpg")),
-    ),
-  );
+profilePhotoContainer(String photoUrl, {double? height, double? width}) {
+  return CachedNetworkImage(
+      imageUrl: "$imageUrl=${photoUrl}",
+      fit: BoxFit.cover,
+      imageBuilder: (context, imageProvider) => Container(
+            width: height ?? 90.0,
+            height: width ?? 90.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              border:
+                  Border.all(color: primaryColor.withOpacity(0.7), width: 1.5),
+            ),
+          ),
+      placeholder: (context, url) =>
+          skeletonRoundedContainer(context, height ?? 90, width ?? 90),
+      errorWidget: (context, url, error) => Container(
+            width: height ?? 90.0,
+            height: width ?? 90.0,
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: primaryColor.withOpacity(0.7), width: 1.5),
+                shape: BoxShape.circle,
+                color: Colors.grey.shade300),
+            child: Icon(
+              Icons.person,
+              color: Colors.black54,
+              size: 30,
+            ),
+          ));
 }
-
-// saveElevatedButton(BuildContext context, String text) {
-//   return Align(
-//     alignment: Alignment.center,
-//     child: Container(
-//       alignment: Alignment.center,
-//       height: 45,
-//       width: getScreenWidth(context, 0.4),
-//       decoration: BoxDecoration(
-//           color: primaryColor.withOpacity(0.5),
-//           border: Border.all(color: primaryColor.withOpacity(0.3), width: 1),
-//           borderRadius: BorderRadius.circular(20)),
-//       child: Text(
-//         text,
-//         style: TextStyle(
-//             letterSpacing: 0.5,
-//             fontWeight: FontWeight.w500,
-//             color: Colors.white,
-//             fontSize: 19),
-//       ),
-//     ),
-//   );
-// }
 
 class AllPageTitle extends StatelessWidget {
   final String text;
@@ -665,8 +663,7 @@ class AllPageTitle extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Text(
                 text,
-                style: TextStyle(
-                    color: Colors.black, fontSize: 23, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
               ),
             ),
           ),

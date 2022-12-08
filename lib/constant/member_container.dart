@@ -34,7 +34,10 @@ class MemberContainer extends StatelessWidget {
                       width: 1.2))),
           child: Row(
             children: [
-              profilePhotoContainer(30),
+              profilePhotoContainer(
+                  commiteeScreen == true
+                      ? lst[index]['memberData']['avatar']
+                      : lst[index]['avatar'],height: 60,width: 60),
               SizedBox(
                 width: 10,
               ),

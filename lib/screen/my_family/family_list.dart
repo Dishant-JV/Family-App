@@ -72,7 +72,7 @@ class _FamilyListScreenState extends State<FamilyListScreen> {
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Row(
                                 children: [
-                                  profilePhotoContainer(40),
+                                  profilePhotoContainer(familyGetController.familyDataList[index]['avatar'],height: 80,width: 80),
                                   SizedBox(
                                     width: 10,
                                   ),

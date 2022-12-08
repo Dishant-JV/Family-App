@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:family_app/constant/snack_bar.dart';
 import 'package:family_app/getx_controller/getx.dart';
 import 'package:family_app/screen/login/otp_verify_screen.dart';
+import 'package:family_app/screen/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -195,6 +196,7 @@ class _LogInScreenState extends State<LogInScreen> {
           body: jsonEncode(
               {"phno": "+91$phone", 'memberId': int.parse(memberId)}));
       var data = jsonDecode(response.body);
+      print(response.body);
       if (data['code'] == 200) {
         phoneSignIn(phone);
       } else {

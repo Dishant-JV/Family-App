@@ -1,5 +1,5 @@
 import 'package:family_app/screen/gallery/gallery_image/gallery_image_album.dart';
-import 'package:family_app/screen/gallery/gallery_video/gallery_video.dart';
+import 'package:family_app/screen/gallery/gallery_video/gallery_video_album.dart';
 import 'package:family_app/screen/profile/edit_my_profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +40,7 @@ class _GalleryHomeState extends State<GalleryHome> {
               child: PageView(
             controller: page,
             pageSnapping: true,
-            children: [GalleryImageAlbum(), GalleryVideo()],
+            children: [GalleryImageAlbum(), GalleryVideoAlbum()],
           ))
         ],
       ),

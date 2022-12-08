@@ -49,10 +49,10 @@ class _FamilyFormScreenState extends State<FamilyFormScreen> {
             AllPageTitle(
               text: "My Family",
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: profilePhotoContainer(45),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 10),
+            //   child: profilePhotoContainer(45),
+            // ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(

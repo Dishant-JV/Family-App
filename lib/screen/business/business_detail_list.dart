@@ -70,21 +70,22 @@ class _BusinessDetailListState extends State<BusinessDetailList> {
                               child: Row(
                                 children: [
                                   //
-                                  Container(
-                                    width: 70.0,
-                                    height: 70.0,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: primaryColor.withOpacity(0.7),
-                                          width: 2),
-                                      image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new CachedNetworkImageProvider(
-                                            "${imageUrl}=${map['logo']}"),
-                                      ),
-                                    ),
-                                  ),
+                                  profilePhotoContainer("${imageUrl}=${map['logo']}",height: 70,width: 70),
+                                  // Container(
+                                  //   width: 70.0,
+                                  //   height: 70.0,
+                                  //   decoration: new BoxDecoration(
+                                  //     shape: BoxShape.circle,
+                                  //     border: Border.all(
+                                  //         color: primaryColor.withOpacity(0.7),
+                                  //         width: 2),
+                                  //     image: new DecorationImage(
+                                  //       fit: BoxFit.fill,
+                                  //       image: new CachedNetworkImageProvider(
+                                  //           ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   // Container(
                                   //   decoration: BoxDecoration(
                                   //       border: Border.all(

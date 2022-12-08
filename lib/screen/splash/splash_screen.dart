@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:family_app/constant/set_pref.dart';
 import 'package:family_app/screen/home/home_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constant/constant.dart';
+import '../../notification/notification.dart';
 import '../login/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,10 +19,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? timer;
+  FCM firebaseMessaging = FCM();
+
 
   @override
-  void initState() {
+  void initState()  {
+    firebaseMessaging.setNotifications(context);
     checkLogIn();
+    device_token();
+    // deviceToken();
   }
 
   @override
@@ -94,4 +101,13 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     });
   }
+
+
+}
+String deviceToken="";
+ device_token() async {
+  final _firebaseMessaging = await FirebaseMessaging.instance;
+  _firebaseMessaging.getToken().then((value) {
+    deviceToken=value??"";
+  });
 }

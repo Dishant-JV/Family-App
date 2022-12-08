@@ -6,6 +6,7 @@ import 'package:family_app/constant/constant.dart';
 import 'package:family_app/constant/dialog.dart';
 import 'package:family_app/constant/set_pref.dart';
 import 'package:family_app/getx_controller/getx.dart';
+import 'package:family_app/screen/feedback/feedback_screen.dart';
 import 'package:family_app/screen/gallery/gallery_home.dart';
 import 'package:family_app/screen/login/login_screen.dart';
 import 'package:family_app/screen/show_image/show_image.dart';
@@ -21,6 +22,7 @@ import '../detail_search/detail_search.dart';
 import '../donor/donor_screen.dart';
 import '../event/event_screen.dart';
 import '../my_family/family_list.dart';
+import '../post/post_screen.dart';
 import '../profile/my_profile_page.dart';
 import '../search_member/search_member_screen.dart';
 import 'home_model.dart';
@@ -45,11 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
         loadImage();
       }
     });
-    // Future.delayed(Duration.zero, () {
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) => advertiseDialog(context));
-    // });
+    Future.delayed(Duration.zero, () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => advertiseDialog(context));
+    });
   }
 
   int _current = 0;
@@ -69,10 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeMenuModel(menuName: "Business", menuIcon: Icons.add_business),
     HomeMenuModel(menuName: "Result", menuIcon: Icons.add_card),
     HomeMenuModel(menuName: "Feedback", menuIcon: Icons.feedback),
-    HomeMenuModel(
-        menuName: "Detail Search", menuIcon: Icons.manage_search_sharp),
     HomeMenuModel(menuName: "Gallery", menuIcon: FontAwesomeIcons.photoFilm),
-    HomeMenuModel(menuName: "Main Menu", menuIcon: Icons.menu_open_rounded),
+    HomeMenuModel(menuName: "Post", menuIcon: Icons.post_add),
   ];
 
   @override
@@ -88,18 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.compass_calibration,
-                  size: 30,
-                  color: primaryColor.withOpacity(0.7),
-                ),
-                Expanded(
-                  child: Text(
-                    familyName,
-                    style: familyTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  familyName,
+                  style: familyTextStyle,
+                  textAlign: TextAlign.center,
                 ),
                 InkWell(
                   onTap: () async {
@@ -202,11 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         pushMethod(context, FamilyListScreen());
                       } else if (index == 2) {
                         pushMethod(context, SearchMemberScreen(pushFromOuterScreen: true,));
-
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     settings: RouteSettings(name: "/searchMember"),
-                        //     builder: (context) => SearchMemberScreen(
-                        //         pushFromOuterScreen: false)));
                       } else if (index == 3) {
                         pushMethod(context, CommmitteeScreen());
                       } else if (index == 4) {
@@ -215,10 +204,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         pushMethod(context, DonorScreen());
                       } else if (index == 6) {
                         pushMethod(context, BusinessScreen());
+                      }else if (index == 8) {
+                        pushMethod(context, FeedBackScreen());
                       } else if (index == 9) {
-                        pushMethod(context, DetailSearchScreen());
-                      }else if (index == 10) {
                         pushMethod(context, GalleryHome());
+                      }else if (index == 10) {
+                        pushMethod(context, PostScreen());
                       }
                     },
                     child: Container(

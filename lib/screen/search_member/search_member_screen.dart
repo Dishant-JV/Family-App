@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../constant/constant.dart';
 import '../../constant/member_container.dart';
+import '../../constant/profile/profile_page.dart';
 import '../../constant/set_pref.dart';
 import '../../constant/snack_bar.dart';
 import '../../constant/switch.dart';
@@ -35,7 +36,7 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
       if (value) {
         familyGetController.searchMemberList.clear();
         if (widget.pushFromOuterScreen == true) {
-          search_member_dialog_open_time=0;
+          search_member_dialog_open_time = 0;
           familyGetController.selectedDist.value = "";
           familyGetController.selectedTaluka.value = "";
           familyGetController.selectedVillage.value = "";
@@ -48,7 +49,8 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
       }
     });
   }
-  clearList(){
+
+  clearList() {
     familyGetController.distList.clear();
     familyGetController.talukaList.clear();
     familyGetController.villageList.clear();
@@ -56,21 +58,20 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
 
   TextEditingController searchController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()=>popFunciton(),
+      onWillPop: () => popFunciton(),
       child: Scaffold(
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             allScreenStatusBarPadding(context),
             Row(
               children: [
                 Expanded(
-                    child: allPageTitleRow(
-                        "Search Member", familyGetController.searchMemberOnOff)),
+                    child: allPageTitleRow("Search Member",
+                        familyGetController.searchMemberOnOff)),
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: InkWell(
@@ -85,6 +86,29 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
                       )),
                 )
               ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Obx(() => familyGetController.selectedDist.isNotEmpty
+                      ? filterTagContainer(
+                          "Dist", familyGetController.selectedDist)
+                      : Container()),
+                  Obx(() => familyGetController.selectedTaluka.isNotEmpty
+                      ? filterTagContainer(
+                          "Taluka", familyGetController.selectedTaluka)
+                      : Container()),
+                  Obx(() => familyGetController.selectedVillage.isNotEmpty
+                      ? filterTagContainer(
+                          "Village", familyGetController.selectedVillage)
+                      : Container())
+                ],
+              ),
             ),
             SizedBox(
               height: 10,
@@ -135,13 +159,37 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: BouncingScrollPhysics(),
-                          itemCount: familyGetController.searchMemberList.length,
+                          itemCount:
+                              familyGetController.searchMemberList.length,
                           itemBuilder: (context, index) {
-                            return MemberContainer(
-                              index: index,
-                              lst: familyGetController.searchMemberList,
-                              switchData: familyGetController.searchMemberOnOff,
-                              commiteeScreen: false,
+                            return InkWell(
+                              onTap: () {
+                                showConnectivity(context).then((value) {
+                                  if (value) {
+                                    getParticularMemberData(familyGetController.searchMemberList[index]['memberRecId']);
+                                    pushMethod(
+                                        context,
+                                        ProfilePageUI(
+                                          showEditBtn: false,
+                                          switchData: familyGetController
+                                              .mainMemberOnOff,
+                                          map:
+                                              familyGetController.mainMemberMap,
+                                          screenName: 'Member Profile',
+                                        ));
+                                  } else {
+                                    snackBar(
+                                        context, "Check Internet", Colors.red);
+                                  }
+                                });
+                              },
+                              child: MemberContainer(
+                                index: index,
+                                lst: familyGetController.searchMemberList,
+                                switchData:
+                                    familyGetController.searchMemberOnOff,
+                                commiteeScreen: false,
+                              ),
                             );
                           })
                       : loading == true
@@ -188,6 +236,20 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
     }
   }
 
+  getParticularMemberData(int memberRecId) {
+    familyGetController.mainMemberMap.clear();
+    getStringPref('token').then((token) async {
+      final response = await http
+          .get(Uri.parse("$apiUrl/viewMainMember/$memberRecId"), headers: {
+        'Authorization': token,
+      });
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        familyGetController.mainMemberMap.addAll(data['data']);
+      }
+    });
+  }
+
   void getDistVillageList() {
     getStringPref('token').then((token) async {
       final responseDist =
@@ -219,7 +281,39 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
   }
 
   popFunciton() {
-    for(int i=0;i<=search_member_dialog_open_time;i++)
+    for (int i = 0; i <= search_member_dialog_open_time; i++)
       Navigator.pop(context);
+  }
+
+  filterTagContainer(String filterName, RxString filterValue) {
+    return Container(
+      margin: EdgeInsets.only(left: 15),
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: primaryColor),
+      child: Row(
+        children: [
+          Text(
+            "${filterName} - ${filterValue}  ",
+            style: TextStyle(color: Colors.white),
+          ),
+          InkWell(
+            onTap: () {
+              familyGetController.searchMemberList.clear();
+              filterValue.value = "";
+              getFamilyData(searchController.text);
+              setState(() {
+                loading = true;
+              });
+            },
+            child: Icon(
+              Icons.cancel,
+              color: Colors.white,
+              size: 18,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
